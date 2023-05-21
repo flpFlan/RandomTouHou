@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "random-touhou"
+version = "0.1.0"
+description = ""
+authors = ["flpFlan"]
+readme = "README.md"
+packages = [{include = "random_touhou"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+quart = "^0.18.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
