@@ -26,15 +26,35 @@ async def serve():
     return jsonify(r)
 
 
+def match(f: str) -> bool:
+    return (
+        f.endswith("png")
+        or f.endswith("jpg")
+        or f.endswith("jpeg")
+        or f.endswith("gif")
+    )
+
+
 def start_server():
     parser = argparse.ArgumentParser(prog=sys.argv[0])
-    parser.add_argument("img_folder", type=str)
+    parser.add_argument("folder", type=str)
+    parser.add_argument("--url", type=str, default="")
+    parser.add_argument("--host", type=str, default="0.0.0.0")
+    parser.add_argument("--port", type=int, default=5000)
     options = parser.parse_args()
-    img_folder = options.img_folder
-    for _, _, fs in os.walk(img_folder):
+    folder = options.folder
+    url = options.url
+    host = options.host
+    port = options.port
+    for path, _, fs in os.walk(folder):
         for f in fs:
-            imgPool.append(urljoin("http://flpflan.top/", f))
-    app.run()
+            if not match(f):
+                continue
+            if url:
+                imgPool.append(urljoin(urljoin(url, path.replace(folder, "")), f))
+            else:
+                imgPool.append(os.path.join(path, f))
+    app.run(host=host, port=port)
 
 
 if __name__ == "__main__":
