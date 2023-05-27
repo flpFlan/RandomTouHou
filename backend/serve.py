@@ -13,7 +13,7 @@ imgPool = []
 app = Quart(__name__)
 
 
-@app.route("/img")
+@app.route("/arts")
 async def serve():
     index = request.args.get("index", "1")
     num = request.args.get("num", "10")
@@ -42,7 +42,7 @@ def start_server():
     parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--port", type=int, default=5000)
     options = parser.parse_args()
-    folder = options.folder
+    folder = os.path.abspath(options.folder)
     url = options.url
     host = options.host
     port = options.port
